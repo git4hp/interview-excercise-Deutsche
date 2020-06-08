@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class TradingStrategyTest {
@@ -23,7 +23,7 @@ public class TradingStrategyTest {
     PriceListenerImpl priceListener;
 
     @InjectMocks
-    TradingStrategy tradingStrategy;
+    TradingStrategy tradingStrategy = new TradingStrategy("IBM", 100, 100);
 
     @Before
     public void setup() {
@@ -36,5 +36,8 @@ public class TradingStrategyTest {
        when(priceListener.getSecurityPrice()).thenReturn(110.0);
 
        tradingStrategy.checkAndExecute();
+
+       verify(executionService, times(1)).sell("IBM", 100.0, 100);
+
     }
 }
